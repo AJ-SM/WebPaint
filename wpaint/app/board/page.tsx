@@ -10,6 +10,7 @@ export default function Board(){
     const startval = useRef({x:0,y:0})
     const endval = useRef({x:0,y:0})
     const pencil = false;
+    const backupArray = useState<CanvasRenderingContext2D[]>([])
 
     function updatepointer(e:MouseEvent){
         pointer.current = {x:e.clientX,y:e.clientY}
@@ -38,6 +39,7 @@ export default function Board(){
             isPainting.current = !isPainting.current
             ctx?.beginPath()
             endval.current=pointer.current
+            
             }
 
             const draw = ()=>{
@@ -111,8 +113,17 @@ export default function Board(){
 
     },[])
 
+        function undoCanvas(){
+            const canvas = canvaref.current;
+            if(!canvas) return;
+            const ctx = canvas.getContext("2d")
+            if(!ctx) return ; 
+            
 
-                function clearCanvas() {
+            console.log(ctx)
+        }
+
+        function clearCanvas() {
             const canva = canvaref.current;
             if (!canva) return;
             const ctx = canva.getContext("2d");
@@ -144,14 +155,14 @@ export default function Board(){
 
                 
             </div>
-            <div className=" cursor-pointer hover:bg-slate-200 h-9 flex justify-center items-center w-9 p-2 rounded-2xl">
+            <div className=" cursor-pointer hover:bg-slate-200 h-9 flex justify-center items-center w-9 p-2 rounded-2xl" >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
             </svg>
 
             </div>
 
-            <div className=" cursor-pointer hover:bg-slate-200 h-9 flex justify-center items-center w-9 p-2 rounded-2xl">
+            <div className=" cursor-pointer hover:bg-slate-200 h-9 flex justify-center items-center w-9 p-2 rounded-2xl" onClick={undoCanvas}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                     </svg>
